@@ -3,7 +3,7 @@ import math
 import ctypes
 import random
 import os
-
+import sprites
 
 x2 = 0
 y2 = 0
@@ -688,7 +688,20 @@ class GameView(arcade.View):
             arcade.close_window()
             print("Noob, you lost.")
 
+#hitboxes
+        enemy_hit_with_player = arcade.check_for_collision_with_list(self.player, self.enemy_list)
+        for enemy in enemy_hit_with_player:
+            self.player_life -= 1
+            self.enemy_life -= 1
 
+        for enemy in self.enemy_list:
+            enemy_hit_with_projectile = arcade.check_for_collision_with_list(enemy, self.fireball_list)
+            for enemy_hit in enemy_hit_with_projectile:
+                self.enemy_life -= 1
+
+        for enemy in self.enemy_list:
+            if enemy.bottom > SCREEN_HEIGHT - screen_resolution_int(150) or enemy.top < screen_resolution_int(150) or enemy.right < screen_resolution_int(150) or slime.left > SCREEN_WIDTH - screen_resolution_int(150):
+                self.enemy_life -= 1
 #slime hitbox
         slime_hit_with_player = arcade.check_for_collision_with_list(self.player, self.slime_list)
         for slime in slime_hit_with_player:
